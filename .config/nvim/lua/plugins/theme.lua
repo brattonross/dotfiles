@@ -50,6 +50,23 @@ return {
 		end,
 	},
 	{
+		"neanias/everforest-nvim",
+		enabled = false,
+		version = false,
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("everforest").setup({
+				background = "hard",
+				transparent_background_level = 2,
+				disable_italic_comments = true,
+				italics = false,
+			})
+
+			vim.cmd.colorscheme("everforest")
+		end,
+	},
+	{
 		"sainnhe/gruvbox-material",
 		enabled = false,
 		lazy = false,

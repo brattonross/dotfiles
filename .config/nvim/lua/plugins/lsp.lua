@@ -70,7 +70,7 @@ return {
                 end,
             })
 
-            -- Format on save (except tsserver)
+            -- Format on save
             local _augroups = {}
             local get_augroup = function(client)
                 if not _augroups[client.id] then
@@ -101,7 +101,9 @@ return {
                         group = get_augroup(client),
                         buffer = bufnr,
                         callback = function()
-                            if client.name == "tsserver" then
+                            -- Don't format if we're in a tsserver or jsonls buffer
+                            -- Prettier is used to format these files instead
+                            if client.name == "tsserver" or client.name == "jsonls" then
                                 return
                             end
 

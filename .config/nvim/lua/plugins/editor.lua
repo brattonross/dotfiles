@@ -78,6 +78,10 @@ return {
 
 			require("nvim-treesitter.configs").setup({
 				ensure_installed = { "lua", "tsx", "typescript", "vimdoc", "vim", "css", "astro" },
+				sync_install = false,
+				ignore_install = {},
+				auto_install = false,
+				modules = {},
 				highlight = { enable = true },
 				indent = { enable = true, disable = { "python" } },
 				incremental_selection = {
@@ -102,46 +106,6 @@ return {
 	{
 		"windwp/nvim-ts-autotag",
 		opts = {},
-		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
-		"jose-elias-alvarez/null-ls.nvim",
-		enabled = false,
-		config = function()
-			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-			local null_ls = require("null-ls")
-
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.formatting.gofumpt,
-					null_ls.builtins.formatting.goimports,
-					null_ls.builtins.formatting.prettierd,
-					null_ls.builtins.formatting.rustfmt,
-					null_ls.builtins.formatting.stylua,
-				},
-				on_attach = function(client, bufnr)
-					if client.supports_method("textDocument/formatting") then
-						vim.api.nvim_clear_autocmds({
-							group = augroup,
-							buffer = bufnr,
-						})
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							group = augroup,
-							buffer = bufnr,
-							callback = function()
-								vim.lsp.buf.format({
-									bufnr = bufnr,
-									filter = function(c)
-										-- Prevent tsserver or eslint from formatting
-										return c.name ~= "tsserver" or c.name ~= "eslint"
-									end,
-								})
-							end,
-						})
-					end
-				end,
-			})
-		end,
 		event = { "BufReadPost", "BufNewFile" },
 	},
 	{

@@ -9,15 +9,19 @@ return {
 	},
 	{
 		"lewis6991/gitsigns.nvim",
-		opts = {
-			signs = {
-				add = { text = "+" },
-				change = { text = "~" },
-				delete = { text = "_" },
-				topdelete = { text = "‾" },
-				changedelete = { text = "~" },
-			},
-		},
+		config = function()
+			require("gitsigns").setup({
+				signs = {
+					add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr" },
+					change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr" },
+					delete = { hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr" },
+					topdelete = { hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr" },
+					changedelete = { hl = "GitSignsDelete", text = "~", numhl = "GitSignsChangeNr" },
+				},
+				signcolumn = false,
+				numhl = true,
+			})
+		end,
 		event = { "BufReadPost", "BufNewFile" },
 		keys = {
 			{
