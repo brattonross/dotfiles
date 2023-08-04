@@ -7,7 +7,6 @@ vim.g.splitright = true
 
 vim.opt.backup = false
 vim.opt.clipboard = "unnamedplus"
-vim.opt.colorcolumn = "80"
 vim.opt.completeopt = "menuone,noselect"
 vim.opt.expandtab = true
 vim.opt.guicursor = ""
