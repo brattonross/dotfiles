@@ -23,9 +23,9 @@ return {
 				desc = "Navigate to Harpoon file [4]",
 			},
 			{
-				"<leader>a",
+				"<leader>m",
 				"<cmd>lua require('harpoon.mark').add_file()<cr>",
-				desc = "[A]dd file to Harpoon",
+				desc = "[M]ark file with Harpoon",
 			},
 			{
 				"<C-e>",
@@ -54,14 +54,12 @@ return {
 			local telescope_config = require("telescope.config")
 			local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
 
-			-- Search hidden files, but ignore .git
 			table.insert(vimgrep_arguments, "--hidden")
 			table.insert(vimgrep_arguments, "--glob")
-			table.insert(vimgrep_arguments, "!**/.git")
+			table.insert(vimgrep_arguments, "!**/{.git,.sl,node_modules}}")
 
 			require("telescope").setup({
 				defaults = {
-					layout_strategy = "vertical",
 					mappings = {
 						i = {
 							["<C-u>"] = false,
@@ -72,7 +70,13 @@ return {
 				},
 				pickers = {
 					find_files = {
-						find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git" },
+						find_command = {
+							"rg",
+							"--files",
+							"--hidden",
+							"--glob",
+							"!**/{.git,.sl,node_modules}",
+						},
 					},
 				},
 			})
@@ -102,6 +106,11 @@ return {
 				"<leader>sh",
 				"<cmd>Telescope help_tags<cr>",
 				desc = "[S]earch [H]elp",
+			},
+			{
+				"<leader>si",
+				"<cmd>Telescope highlights<cr>",
+				desc = "[S]earch H[i]ghlights",
 			},
 			{
 				"<leader>sw",
@@ -170,5 +179,39 @@ return {
 			},
 		},
 		event = "VeryLazy",
+	},
+	{
+		"mbbill/undotree",
+		keys = {
+			{
+				"<leader>u",
+				"<cmd>UndotreeToggle<cr>",
+				desc = "[U]ndo tree",
+			},
+		},
+		event = "BufReadPost",
+	},
+	{
+		"tpope/vim-unimpaired",
+		event = "BufReadPost",
+	},
+	{
+		"stevearc/oil.nvim",
+		opts = {
+			skip_confirm_for_simple_edits = true,
+			view_options = {
+				show_hidden = true,
+			},
+		},
+		event = "VeryLazy",
+		keys = {
+			{
+				"-",
+				"<cmd>Oil<cr>",
+				{
+					desc = "Open parent directory",
+				},
+			},
+		},
 	},
 }

@@ -22,6 +22,12 @@ return {
 		event = "InsertEnter",
 	},
 	{
+		"sourcegraph/sg.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+	},
+	{
 		"tpope/vim-sleuth",
 		event = { "BufReadPost", "BufNewFile" },
 	},
@@ -51,9 +57,7 @@ return {
 				end,
 				desc = "Previous todo comment",
 			},
-			{ "<leader>xt", "<cmd>TodoTrouble<cr>",                         desc = "Todo (Trouble)" },
-			{ "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
-			{ "<leader>st", "<cmd>TodoTelescope<cr>",                       desc = "Todo" },
+			{ "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
 		},
 		event = { "BufReadPost", "BufNewFile" },
 	},
@@ -64,43 +68,9 @@ return {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			{
 				"nvim-treesitter/nvim-treesitter-context",
-				config = function()
-					require("treesitter-context").setup({
-						enable = true,
-					})
-				end,
+				config = true,
 			},
 		},
-		config = function()
-			pcall(require("nvim-treesitter.install").update({
-				with_sync = true,
-			}))
-
-			require("nvim-treesitter.configs").setup({
-				ensure_installed = { "lua", "tsx", "typescript", "vimdoc", "vim", "css", "astro" },
-				sync_install = false,
-				ignore_install = {},
-				auto_install = false,
-				modules = {},
-				highlight = { enable = true },
-				indent = { enable = true, disable = { "python" } },
-				incremental_selection = {
-					enable = true,
-					keymaps = {
-						init_selection = "<c-space>",
-						node_incremental = "<c-space>",
-						scope_incremental = "<c-s>",
-						node_decremental = "<M-space>",
-					},
-				},
-				textobjects = {
-					select = {
-						enable = true,
-						lookahead = true,
-					},
-				},
-			})
-		end,
 		event = { "BufReadPost", "BufNewFile" },
 	},
 	{
@@ -110,6 +80,7 @@ return {
 	},
 	{
 		"echasnovski/mini.surround",
+		enabled = false,
 		config = function()
 			require("mini.surround").setup()
 		end,
@@ -131,6 +102,7 @@ return {
 	},
 	{
 		"echasnovski/mini.misc",
+		enabled = false,
 		version = false,
 		config = function()
 			local MiniMisc = require("mini.misc")
@@ -157,12 +129,15 @@ return {
 			luasnip.config.setup({})
 
 			cmp.setup({
+				enabled = true,
 				snippet = {
 					expand = function(args)
 						luasnip.lsp_expand(args.body)
 					end,
 				},
 				mapping = cmp.mapping.preset.insert({
+					["<C-n>"] = cmp.mapping.select_next_item(),
+					["<C-p>"] = cmp.mapping.select_prev_item(),
 					["<C-d>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
 					["<C-Space>"] = cmp.mapping.complete({}),
@@ -178,5 +153,79 @@ return {
 			})
 		end,
 		event = "InsertEnter",
+	},
+	{
+		"stevearc/conform.nvim",
+		config = function()
+			require("conform").setup({
+				formatters_by_ft = {
+					astro = { { "prettierd", "prettier" } },
+					css = { { "prettierd", "prettier" } },
+					go = { { "gofmt" } },
+					html = { { "prettierd", "prettier" } },
+					javascript = { { "prettierd", "prettier" }, "biome" },
+					javascriptreact = { { "prettierd", "prettier" }, "biome" },
+					json = { { "prettierd", "prettier" }, "biome" },
+					lua = { "stylua" },
+					markdown = { { "prettierd", "prettier" } },
+					templ = { "rustywind" },
+					typescript = { { "prettierd", "prettier" }, "biome" },
+					typescriptreact = { { "prettierd", "prettier" }, "biome" },
+					yaml = { { "prettierd", "prettier" } },
+				},
+			})
+
+			local util = require("conform.util")
+
+			require("conform.formatters.biome").cwd = require("conform.util").root_file({ "biome.json" })
+			require("conform.formatters.biome").condition = function(self, ctx)
+				return util.root_file({ "biome.json" })(self, ctx) ~= nil
+			end
+
+			require("conform.formatters.prettier").condition = function(self, ctx)
+				return util.root_file({
+					".prettierrc",
+					".prettierrc.json",
+					".prettierrc.js",
+					".prettierrc.cjs",
+					"prettier.config.js",
+					"prettier.config.cjs",
+				})(self, ctx) ~= nil
+			end
+
+			require("conform.formatters.prettierd").condition = function(self, ctx)
+				return util.root_file({
+					".prettierrc",
+					".prettierrc.json",
+					".prettierrc.js",
+					".prettierrc.cjs",
+					"prettier.config.js",
+					"prettier.config.cjs",
+				})(self, ctx) ~= nil
+			end
+
+			vim.api.nvim_create_autocmd("BufWritePre", {
+				pattern = "*",
+				callback = function(args)
+					require("conform").format({
+						bufnr = args.buf,
+						timeout_ms = 2000,
+						lsp_fallback = "always",
+					})
+				end,
+			})
+			vim.api.nvim_create_user_command("Format", function()
+				local result = require("conform").format({
+					timeout_ms = 2000,
+					lsp_fallback = "always",
+				})
+				if result == nil then
+					vim.notify("No formatter found for this filetype", vim.log.levels.WARN)
+				end
+			end, {
+				desc = "Format current buffer",
+			})
+		end,
+		event = { "BufReadPost", "BufNewFile" },
 	},
 }

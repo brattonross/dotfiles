@@ -1,10 +1,3 @@
-vim.g.netrw_alto = 1
-vim.g.netrw_altv = 1
-vim.g.netrw_banner = 0
-vim.g.netrw_bufsettings = "noma nomod nu nobl nowrap ro"
-vim.g.splitbelow = true
-vim.g.splitright = true
-
 vim.opt.backup = false
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = "menuone,noselect"
@@ -39,9 +32,9 @@ vim.opt.updatetime = 50
 vim.opt.wrap = false
 
 -- everforest
-vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#4f5b58", bg = "None" })
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#43484E", bg = "None" })
 vim.api.nvim_set_hl(0, "winbar", {
-	fg = "#4f5b58",
+	fg = "#777B84",
 	bg = "None",
 })
 

@@ -1,65 +1,22 @@
-local catppuccin = {
-	fg = "#a6adc8",
-	bg = "#313244",
-}
-
-local everforest = {
-	-- fg = "#56635f",
-	bg = "None",
-}
-
-local colors = everforest
-
 return {
 	{
 		"nvim-lualine/lualine.nvim",
 		enabled = true,
 		config = function()
+			local theme = require("lualine.themes.gruvbox-material")
+			theme.normal.a.bg = "#B5B3AD"
+			theme.normal.b.bg = "#3B3A37"
+			theme.normal.c.bg = "#2A2A28"
+			theme.insert.a.bg = "#FFC53D"
+			theme.visual.a.bg = "#B1A9FF"
+			theme.command.a.bg = "#FF801F"
+
 			require("lualine").setup({
 				options = {
 					icons_enabled = false,
-					theme = {
-						normal = {
-							a = { fg = colors.fg, bg = colors.bg },
-							b = { fg = colors.fg, bg = colors.bg },
-							c = { fg = colors.fg, bg = colors.bg },
-						},
-						insert = {
-							a = { fg = colors.fg, bg = colors.bg },
-							b = { fg = colors.fg, bg = colors.bg },
-							c = { fg = colors.fg, bg = colors.bg },
-						},
-						visual = {
-							a = { fg = colors.fg, bg = colors.bg },
-							b = { fg = colors.fg, bg = colors.bg },
-							c = { fg = colors.fg, bg = colors.bg },
-						},
-						replace = {
-							a = { fg = colors.fg, bg = colors.bg },
-							b = { fg = colors.fg, bg = colors.bg },
-							c = { fg = colors.fg, bg = colors.bg },
-						},
-						command = {
-							a = { fg = colors.fg, bg = colors.bg },
-							b = { fg = colors.fg, bg = colors.bg },
-							c = { fg = colors.fg, bg = colors.bg },
-						},
-						inactive = {
-							a = { fg = colors.fg, bg = colors.bg },
-							b = { fg = colors.fg, bg = colors.bg },
-							c = { fg = colors.fg, bg = colors.bg },
-						},
-					},
+					-- theme = theme,
 					component_separators = "|",
 					section_separators = "",
-				},
-				sections = {
-					lualine_c = {
-						{
-							-- "filename",
-							-- path = 1, -- 1: Relative path
-						},
-					},
 				},
 			})
 		end,
@@ -72,7 +29,6 @@ return {
 			show_end_of_line = true,
 			space_char_blankline = " ",
 		},
-		-- event = { "BufReadPost", "BufNewFile" },
 		lazy = false,
 	},
 	{
@@ -83,10 +39,10 @@ return {
 		},
 		cmd = { "TroubleToggle", "Trouble" },
 		keys = {
-			{ "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "Document Diagnostics (Trouble)" },
+			{ "<leader>xx", "<cmd>TroubleToggle document_diagnostics<cr>",  desc = "Document Diagnostics (Trouble)" },
 			{ "<leader>xX", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics (Trouble)" },
-			{ "<leader>xL", "<cmd>TroubleToggle loclist<cr>", desc = "Location List (Trouble)" },
-			{ "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List (Trouble)" },
+			{ "<leader>xL", "<cmd>TroubleToggle loclist<cr>",               desc = "Location List (Trouble)" },
+			{ "<leader>xQ", "<cmd>TroubleToggle quickfix<cr>",              desc = "Quickfix List (Trouble)" },
 			{
 				"[q",
 				function()
@@ -111,5 +67,16 @@ return {
 			},
 		},
 		event = { "BufReadPost", "BufNewFile" },
+	},
+	{
+		"xiyaowong/transparent.nvim",
+		enabled = false,
+		opts = {
+			extra_groups = {
+				"NormalFloat",
+				"FloatBorder",
+				"CursorLine",
+			},
+		},
 	},
 }

@@ -6,6 +6,7 @@ return {
 	},
 	{
 		"akinsho/toggleterm.nvim",
+		enabled = false,
 		config = function()
 			require("toggleterm").setup({
 				insert_mappings = false,
@@ -49,8 +50,11 @@ return {
 	},
 	{
 		"norcalli/nvim-colorizer.lua",
+		enabled = false,
 		config = function()
-			require("colorizer").setup()
+			require("colorizer").setup({
+				filetypes = { "*", "!TelescopeResults" },
+			})
 		end,
 		event = { "BufRead", "BufNewFile" },
 	},

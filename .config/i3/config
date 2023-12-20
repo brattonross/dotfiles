@@ -19,6 +19,8 @@ set $everforest_accent_aqua #83c092
 set $everforest_accent_blue #7fbbb3
 set $everforest_accent_purple #d699b6
 
+smart_borders on
+
 gaps inner 8
 gaps outer 0
 
@@ -77,7 +79,8 @@ bindsym $mod+d exec --no-startup-id dmenu_run -fn "Berkeley Mono Variable-9" -c 
 # bindcode $mod+40 exec --no-startup-id i3-dmenu-desktop
 
 # custom shortcuts for applications
-bindsym $mod+Shift+b exec --no-startup-id brave-browser-nightly
+bindsym $mod+Shift+b exec --no-startup-id firefox-developer
+bindsym $mod+Shift+t exec --no-startup-id wezterm start -- tmux-sessionizer
 
 # change focus
 bindsym $mod+h focus left
@@ -119,6 +122,8 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+
+bindsym $mod+Shift+m exec "i3-msg resize set 1920 1080 && i3-msg move position center"
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -181,16 +186,16 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym $mod+h resize shrink width 8 px or 8 ppt
-        bindsym $mod+j resize grow height 8 px or 8 ppt
-        bindsym $mod+k resize shrink height 8 px or 8 ppt
-        bindsym $mod+l resize grow width 8 px or 8 ppt
+        bindsym $mod+h resize shrink width 2 px or 2 ppt
+        bindsym $mod+j resize grow height 2 px or 2 ppt
+        bindsym $mod+k resize shrink height 2 px or 2 ppt
+        bindsym $mod+l resize grow width 2 px or 2 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 8 px or 8 ppt
-        bindsym Down resize grow height 8 px or 8 ppt
-        bindsym Up resize shrink height 8 px or 8 ppt
-        bindsym Right resize grow width 8 px or 8 ppt
+        bindsym Left resize shrink width 2 px or 2 ppt
+        bindsym Down resize grow height 2 px or 2 ppt
+        bindsym Up resize shrink height 2 px or 2 ppt
+        bindsym Right resize grow width 2 px or 2 ppt
 
         # back to normal: Enter or Escape
         bindsym Return mode "default"
@@ -200,18 +205,19 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 # exec --no-startup-id xsetroot -solid "#181825"
-exec --no-startup-id feh --randomize --bg-scale ~/Pictures/nature/*
+exec --no-startup-id feh --randomize --bg-fill ~/Pictures/nature/* &
 
 exec_always --no-startup-id killall dunst; dunst -config ~/.config/dunst/dunstrc &
 exec_always --no-startup-id killall picom; picom -b --experimental-backends &
-exec_always --no-startup-id killall autotiling; autotiling
+exec_always --no-startup-id killall autotiling; autotiling &
+# exec_always --no-startup-id killall redshift; redshift &
 
-# class                 border  background      text    indicator       child_border
-client.focused          $everforest_accent_green   $everforest_accent_green           $everforest_bg_2   $everforest_accent_green           $everforest_accent_green
-client.focused_inactive $everforest_bg_2   $everforest_bg_2           $everforest_fg_default   $everforest_bg_2           $everforest_bg_2
-client.unfocused        $everforest_bg_2   $everforest_bg_2           $everforest_fg_default   $everforest_bg_2           $everforest_bg_2
-client.urgent           $everforest_accent_red    $everforest_accent_red            $everforest_fg_default   $everforest_accent_red            $everforest_accent_red
-client.placeholder      $everforest_bg_2   $everforest_bg_2           $everforest_fg_default   $everforest_bg_2           $everforest_bg_2
+# class                 border                          background                      text                    indicator                       child_border
+client.focused          $everforest_accent_green        $everforest_accent_green        $everforest_bg_2        $everforest_accent_green        $everforest_accent_green
+client.focused_inactive $everforest_bg_2                $everforest_bg_2                $everforest_fg_default  $everforest_bg_2                $everforest_bg_2
+client.unfocused        $everforest_bg_2                $everforest_bg_2                $everforest_fg_default  $everforest_bg_2                $everforest_bg_2
+client.urgent           $everforest_accent_red          $everforest_accent_red          $everforest_fg_default  $everforest_accent_red          $everforest_accent_red
+client.placeholder      $everforest_bg_2                $everforest_bg_2                $everforest_fg_default  $everforest_bg_2                $everforest_bg_2
 
 client.background $everforest_bg_2
 
@@ -223,10 +229,13 @@ default_border pixel 1
 
 ##  Screenshots in files
 bindsym Print exec --no-startup-id maim --format=png "/home/$USER/Pictures/screenshot-$(date -u +'%Y%m%d-%H%M%SZ')-all.png"
-bindsym $mod+Print exec --no-startup-id maim --format=png --window $(xdotool getactivewindow) "/home/$USER/Pictures/screenshot-$(date -u +'%Y%m%d-%H%M%SZ')-current.png"
+# bindsym Shift+Ctrl+$mod+4 exec --no-startup-id maim --format=png --window $(xdotool getactivewindow) "/home/$USER/Pictures/screenshot-$(date -u +'%Y%m%d-%H%M%SZ')-current.png"
 bindsym Shift+Print exec --no-startup-id maim --format=png --select "/home/$USER/Pictures/screenshot-$(date -u +'%Y%m%d-%H%M%SZ')-selected.png"
 
 ## Screenshots in clipboards
-bindsym Ctrl+Print exec --no-startup-id maim --format=png | xclip -selection clipboard -t image/png
-bindsym Ctrl+$mod+Print exec --no-startup-id maim --format=png --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+bindsym Ctrl+4 exec --no-startup-id maim --format=png | xclip -selection clipboard -t image/png
+bindsym Ctrl+$mod+4 exec --no-startup-id maim --format=png --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
 bindsym Ctrl+Shift+$mod+4 exec --no-startup-id maim --format=png --select | xclip -selection clipboard -t image/png
+
+bindsym $mod+period exec --no-startup-id emoji-picker.AppImage
+

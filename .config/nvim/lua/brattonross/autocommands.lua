@@ -50,10 +50,26 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 })
 
 -- Ensure that netrw buffers use the correct keybindings
+-- Also, set winbar for netrw buffers
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "netrw",
 	callback = function()
 		vim.api.nvim_buf_set_keymap(0, "n", "<C-l>", "<Cmd>NvimTmuxNavigateRight<CR>", { noremap = true })
+		vim.api.nvim_buf_set_keymap(0, "n", "<C-h>", "<Cmd>NvimTmuxNavigateLeft<CR>", { noremap = true })
+		vim.api.nvim_buf_set_keymap(0, "n", "<C-j>", "<Cmd>NvimTmuxNavigateDown<CR>", { noremap = true })
+		vim.api.nvim_buf_set_keymap(0, "n", "<C-k>", "<Cmd>NvimTmuxNavigateUp<CR>", { noremap = true })
+
+		vim.wo.winbar = " %m %f "
 	end,
 	group = augroup("netrw_mappings"),
+})
+
+-- Disable relative line numbers and signcolumn in terminal windows
+vim.api.nvim_create_autocmd("TermOpen", {
+	callback = function()
+		vim.opt_local.number = false
+		vim.opt_local.relativenumber = false
+		vim.opt_local.signcolumn = "no"
+	end,
+	group = augroup("terminals"),
 })
