@@ -1,0 +1,87 @@
+@import "./rose-pine.css";
+
+* {
+    font-family: "Berkeley Mono", Helvetica, sans-serif;
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: @text;
+}
+
+.modules-left {
+    background-color: @base;
+    border: 1px solid @overlay;
+    border-radius: 6px;
+    margin: 0.375rem 0.5rem;
+}
+
+#workspaces button {
+    color: @muted;
+    padding: 0 0.5rem;
+}
+
+#workspaces button:hover {
+    background: @overlay;
+    border-color: @muted;
+    box-shadow: none;
+    color: @text;
+}
+
+#workspaces button.visible {
+    color: @text;
+}
+
+#clock {
+    padding: 0.5rem 0.75rem;
+    border-right: 1px solid @overlay;
+}
+
+#custom-weather {
+    padding: 0.5rem 0.75rem;
+}
+
+.modules-center {
+    background-color: @base;
+    border: 1px solid @overlay;
+    border-radius: 6px;
+    margin: 0.375rem 0;
+}
+
+.modules-right {
+    background-color: @base;
+    border: 1px solid @overlay;
+    border-radius: 6px;
+    margin: 0.375rem 0.5rem;
+}
+
+#cpu {
+    padding: 0.5rem 0.75rem;
+    color: @rose;
+    border-right: 1px solid @overlay;
+}
+
+#memory {
+    padding: 0.5rem 0.75rem;
+    color: @pine;
+    border-right: 1px solid @overlay;
+}
+
+#disk {
+    padding: 0.5rem 0.75rem;
+    color: @foam;
+}
+
+.custom-firefox,
+.custom-spotify {
+    padding: 0.5rem 0.75rem;
+    border-right: 1px solid @overlay;
+}
+.custom-firefox {
+    color: @love;
+}
+.custom-spotify {
+    color: #1db954;
+}
