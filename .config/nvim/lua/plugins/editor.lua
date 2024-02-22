@@ -6,7 +6,7 @@ return {
 		config = function()
 			require("copilot").setup({
 				suggestion = {
-					enabled = true,
+					enabled = false,
 					auto_trigger = true,
 					keymap = {
 						accept = "<C-j>",
@@ -17,15 +17,19 @@ return {
 					markdown = true,
 					yaml = true,
 				},
+				panel = {
+					enabled = false,
+				},
 			})
 		end,
 		event = "InsertEnter",
 	},
 	{
-		"sourcegraph/sg.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
+		"zbirenbaum/copilot-cmp",
+		event = { "InsertEnter" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
 	},
 	{
 		"tpope/vim-sleuth",
@@ -72,44 +76,100 @@ return {
 			},
 		},
 		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
-		"windwp/nvim-ts-autotag",
-		opts = {},
-		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
-		"echasnovski/mini.surround",
-		enabled = false,
 		config = function()
-			require("mini.surround").setup()
+			require("nvim-treesitter.configs").setup({
+				modules = {},
+				sync_install = false,
+				ignore_install = {},
+				ensure_installed = {
+					"lua",
+					"tsx",
+					"typescript",
+					"vimdoc",
+					"vim",
+					"css",
+					"astro",
+					"go",
+					"rust",
+					"ocaml",
+					"html",
+					"templ",
+				},
+				auto_install = false,
+				highlight = { enable = true },
+				indent = { enable = true },
+				incremental_selection = {
+					enable = true,
+					keymaps = {
+						init_selection = "<c-space>",
+						node_incremental = "<c-space>",
+						scope_incremental = "<c-s>",
+						node_decremental = "<M-space>",
+					},
+				},
+				textobjects = {
+					select = {
+						enable = true,
+						lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+						keymaps = {
+							-- You can use the capture groups defined in textobjects.scm
+							["aa"] = "@parameter.outer",
+							["ia"] = "@parameter.inner",
+							["af"] = "@function.outer",
+							["if"] = "@function.inner",
+							["ac"] = "@class.outer",
+							["ic"] = "@class.inner",
+						},
+					},
+					move = {
+						enable = true,
+						set_jumps = true, -- whether to set jumps in the jumplist
+						goto_next_start = {
+							["]m"] = "@function.outer",
+							["]]"] = "@class.outer",
+						},
+						goto_next_end = {
+							["]M"] = "@function.outer",
+							["]["] = "@class.outer",
+						},
+						goto_previous_start = {
+							["[m"] = "@function.outer",
+							["[["] = "@class.outer",
+						},
+						goto_previous_end = {
+							["[M"] = "@function.outer",
+							["[]"] = "@class.outer",
+						},
+					},
+					swap = {
+						enable = true,
+						swap_next = {
+							["<leader>a"] = "@parameter.inner",
+						},
+						swap_previous = {
+							["<leader>A"] = "@parameter.inner",
+						},
+					},
+				},
+			})
+
+			local parser_configs = require("nvim-treesitter.parsers").get_parser_configs()
+
+			parser_configs.templ = {
+				install_info = {
+					url = "https://github.com/vrischmann/tree-sitter-templ.git",
+					files = { "src/parser.c", "src/scanner.c" },
+					branch = "master",
+				},
+			}
+
+			vim.treesitter.language.register("templ", "templ")
 		end,
-		event = { "BufReadPost", "BufNewFile" },
 	},
 	{
 		"echasnovski/mini.comment",
 		config = function()
 			require("mini.comment").setup()
-		end,
-		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
-		"echasnovski/mini.pairs",
-		config = function()
-			require("mini.pairs").setup()
-		end,
-		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
-		"echasnovski/mini.misc",
-		enabled = false,
-		version = false,
-		config = function()
-			local MiniMisc = require("mini.misc")
-			MiniMisc.setup()
-			MiniMisc.setup_auto_root({
-				".git",
-			})
 		end,
 		event = { "BufReadPost", "BufNewFile" },
 	},
@@ -141,12 +201,14 @@ return {
 					["<C-d>"] = cmp.mapping.scroll_docs(-4),
 					["<C-f>"] = cmp.mapping.scroll_docs(4),
 					["<C-Space>"] = cmp.mapping.complete({}),
-					["<CR>"] = cmp.mapping.confirm({
+					["<C-y>"] = cmp.mapping.confirm({
 						behavior = cmp.ConfirmBehavior.Replace,
 						select = true,
 					}),
 				}),
 				sources = {
+					{ name = "cody" },
+					{ name = "copilot" },
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 				},
@@ -163,15 +225,19 @@ return {
 					css = { { "prettierd", "prettier" } },
 					go = { { "gofmt" } },
 					html = { { "prettierd", "prettier" } },
-					javascript = { { "prettierd", "prettier" }, "biome" },
-					javascriptreact = { { "prettierd", "prettier" }, "biome" },
-					json = { { "prettierd", "prettier" }, "biome" },
+					javascript = { { "biome", "prettierd", "prettier" } },
+					javascriptreact = { { "biome", "prettierd", "prettier" } },
+					json = { { "biome", "prettierd", "prettier" } },
 					lua = { "stylua" },
 					markdown = { { "prettierd", "prettier" } },
 					templ = { "rustywind" },
-					typescript = { { "prettierd", "prettier" }, "biome" },
-					typescriptreact = { { "prettierd", "prettier" }, "biome" },
+					typescript = { { "biome", "prettierd", "prettier" } },
+					typescriptreact = { { "biome", "prettierd", "prettier" } },
 					yaml = { { "prettierd", "prettier" } },
+				},
+				format_on_save = {
+					timeout_ms = 2000,
+					lsp_fallback = true,
 				},
 			})
 
@@ -182,42 +248,20 @@ return {
 				return util.root_file({ "biome.json" })(self, ctx) ~= nil
 			end
 
-			require("conform.formatters.prettier").condition = function(self, ctx)
-				return util.root_file({
-					".prettierrc",
-					".prettierrc.json",
-					".prettierrc.js",
-					".prettierrc.cjs",
-					"prettier.config.js",
-					"prettier.config.cjs",
-				})(self, ctx) ~= nil
-			end
-
-			require("conform.formatters.prettierd").condition = function(self, ctx)
-				return util.root_file({
-					".prettierrc",
-					".prettierrc.json",
-					".prettierrc.js",
-					".prettierrc.cjs",
-					"prettier.config.js",
-					"prettier.config.cjs",
-				})(self, ctx) ~= nil
-			end
-
 			vim.api.nvim_create_autocmd("BufWritePre", {
 				pattern = "*",
 				callback = function(args)
 					require("conform").format({
 						bufnr = args.buf,
 						timeout_ms = 2000,
-						lsp_fallback = "always",
+						-- lsp_fallback = true,
 					})
 				end,
 			})
 			vim.api.nvim_create_user_command("Format", function()
 				local result = require("conform").format({
 					timeout_ms = 2000,
-					lsp_fallback = "always",
+					-- lsp_fallback = true,
 				})
 				if result == nil then
 					vim.notify("No formatter found for this filetype", vim.log.levels.WARN)
@@ -227,5 +271,19 @@ return {
 			})
 		end,
 		event = { "BufReadPost", "BufNewFile" },
+	},
+	{
+		"nvim-pack/nvim-spectre",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		opts = {},
+		keys = {
+			{
+				"<leader>ra",
+				"<cmd>lua require('spectre').toggle()<cr>",
+				desc = "[R]epalce [A]ll",
+			},
+		},
 	},
 }

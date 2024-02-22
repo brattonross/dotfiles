@@ -53,10 +53,6 @@ return {
 				nmap("<C-s>", vim.lsp.buf.signature_help, "Signature Documentation")
 
 				nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-
-				-- vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-				-- 	vim.lsp.buf.format()
-				-- end, { desc = "Format current buffer with LSP" })
 			end
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -99,22 +95,14 @@ return {
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				border = "single",
 			})
+			require("lspconfig.ui.windows").default_options.border = "rounded"
 		end,
 		event = { "BufReadPost", "BufNewFile" },
 	},
 	{
 		"dmmulroy/tsc.nvim",
 		config = function()
-			require("tsc").setup({
-				flags = {
-					build = true,
-					noEmit = true,
-					project = function()
-						return require("tsc.utils").find_nearest_tsconfig()
-					end,
-					-- project = false,
-				},
-			})
+			require("tsc").setup({})
 		end,
 		keys = {
 			{

@@ -49,6 +49,7 @@ return {
 			},
 			"debugloop/telescope-undo.nvim",
 			"nvim-telescope/telescope-project.nvim",
+			"nvim-telescope/telescope-ui-select.nvim",
 		},
 		config = function()
 			local telescope_config = require("telescope.config")
@@ -68,6 +69,11 @@ return {
 					},
 					vimgrep_arguments = vimgrep_arguments,
 				},
+				extensions = {
+					["ui-select"] = {
+						require("telescope.themes").get_dropdown({}),
+					},
+				},
 				pickers = {
 					find_files = {
 						find_command = {
@@ -84,7 +90,7 @@ return {
 			-- Enable telescope fzf native, if installed
 			pcall(require("telescope").load_extension, "fzf")
 			require("telescope").load_extension("project")
-			require("telescope").load_extension("undo")
+			require("telescope").load_extension("ui-select")
 		end,
 		keys = {
 			{
@@ -143,11 +149,6 @@ return {
 				desc = "[S]earch [R]esume",
 			},
 			{
-				"<leader>su",
-				"<cmd>Telescope undo<cr>",
-				desc = "[u] Undo history",
-			},
-			{
 				"<leader>gs",
 				"<cmd>Telescope git_status<cr>",
 				desc = "[G]it [S]tatus",
@@ -177,6 +178,17 @@ return {
 				"<cmd>Telescope project<cr>",
 				desc = "[S]earch [P]rojects",
 			},
+			-- {
+			-- 	"<leader>en",
+			-- 	function()
+			-- 		require("telescope.builtin").find_files({
+			-- 			prompt_title = "Neovim Config",
+			-- 			shorten_path = false,
+			-- 			cwd = "~/.config/nvim",
+			-- 		})
+			-- 	end,
+			-- 	desc = "[E]dit [N]vim",
+			-- },
 		},
 		event = "VeryLazy",
 	},
@@ -198,6 +210,7 @@ return {
 	{
 		"stevearc/oil.nvim",
 		opts = {
+			default_file_explorer = true,
 			skip_confirm_for_simple_edits = true,
 			view_options = {
 				show_hidden = true,

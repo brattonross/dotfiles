@@ -5,30 +5,9 @@ return {
 		event = "VeryLazy",
 	},
 	{
-		"akinsho/toggleterm.nvim",
-		enabled = false,
-		config = function()
-			require("toggleterm").setup({
-				insert_mappings = false,
-				open_mapping = [[<leader>tt]],
-				shading_factor = 0,
-				size = 20,
-				terminal_mappings = false,
-				winbar = {
-					enabled = false,
-				},
-			})
-		end,
-	},
-	{
-		"christoomey/vim-tmux-navigator",
-		enabled = false,
-		event = "VeryLazy",
-	},
-	{
 		"alexghergh/nvim-tmux-navigation",
 		opts = {},
-		lazy = false,
+		event = "VeryLazy",
 		keys = {
 			{
 				"<C-h>",
@@ -46,7 +25,7 @@ return {
 				"<C-l>",
 				"<Cmd>NvimTmuxNavigateRight<CR>",
 			},
-		}
+		},
 	},
 	{
 		"norcalli/nvim-colorizer.lua",

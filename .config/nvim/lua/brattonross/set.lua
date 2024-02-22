@@ -1,6 +1,7 @@
 vim.opt.backup = false
 vim.opt.clipboard = "unnamedplus"
 vim.opt.completeopt = "menuone,noselect"
+vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.guicursor = ""
 vim.opt.hlsearch = false
@@ -22,7 +23,9 @@ vim.opt.showmode = false
 vim.opt.signcolumn = "yes"
 vim.opt.smartindent = true
 vim.opt.softtabstop = 4
+vim.opt.splitbelow = true
 vim.opt.splitkeep = "screen"
+vim.opt.splitright = true
 vim.opt.swapfile = false
 vim.opt.tabstop = 4
 vim.opt.termguicolors = true
@@ -31,11 +34,8 @@ vim.opt.undofile = true
 vim.opt.updatetime = 50
 vim.opt.wrap = false
 
--- everforest
 vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#43484E", bg = "None" })
 vim.api.nvim_set_hl(0, "winbar", {
 	fg = "#777B84",
 	bg = "None",
 })
-
-require("lspconfig.ui.windows").default_options.border = "rounded"
