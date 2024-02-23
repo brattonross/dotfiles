@@ -24,10 +24,6 @@ return {
 					},
 				},
 			},
-			{
-				"folke/neodev.nvim",
-				config = true,
-			},
 		},
 		config = function()
 			local on_attach = function(_, bufnr)
@@ -62,7 +58,11 @@ return {
 			local servers = {
 				lua_ls = {
 					Lua = {
-						workspace = { checkThirdParty = false },
+						runtime = { version = "LuaJIT" },
+						workspace = {
+							checkThirdParty = false,
+							library = vim.api.nvim_get_runtime_file("", true),
+						},
 						telemetry = { enable = false },
 					},
 				},
