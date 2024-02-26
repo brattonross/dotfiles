@@ -178,17 +178,6 @@ return {
 				"<cmd>Telescope project<cr>",
 				desc = "[S]earch [P]rojects",
 			},
-			-- {
-			-- 	"<leader>en",
-			-- 	function()
-			-- 		require("telescope.builtin").find_files({
-			-- 			prompt_title = "Neovim Config",
-			-- 			shorten_path = false,
-			-- 			cwd = "~/.config/nvim",
-			-- 		})
-			-- 	end,
-			-- 	desc = "[E]dit [N]vim",
-			-- },
 		},
 		event = "VeryLazy",
 	},

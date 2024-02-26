@@ -1,25 +1,17 @@
 return {
 	{
-		"nvim-lualine/lualine.nvim",
-		enabled = true,
+		"echasnovski/mini.nvim",
 		config = function()
-			local theme = require("lualine.themes.gruvbox-material")
-			theme.normal.a.bg = "#B5B3AD"
-			theme.normal.b.bg = "#3B3A37"
-			theme.normal.c.bg = "#2A2A28"
-			theme.insert.a.bg = "#FFC53D"
-			theme.visual.a.bg = "#B1A9FF"
-			theme.command.a.bg = "#FF801F"
-
-			require("lualine").setup({
-				options = {
-					icons_enabled = false,
-					-- theme = theme,
-					component_separators = "|",
-					section_separators = "",
-				},
+			require("mini.ai").setup({ n_lines = 500 })
+			require("mini.comment").setup()
+			require("mini.statusline").setup({
+				use_icons = false,
 			})
+			-- set highlight statusline
+			vim.cmd("hi StatusLine cterm=NONE ctermfg=NONE ctermbg=NONE guibg=NONE guifg=NONE gui=NONE")
+			vim.cmd("hi StatusLineNC cterm=NONE ctermfg=NONE ctermbg=NONE guibg=NONE guifg=NONE gui=NONE")
+
+			require("mini.surround").setup()
 		end,
-		event = "VeryLazy",
 	},
 }

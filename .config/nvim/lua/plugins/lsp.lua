@@ -81,6 +81,17 @@ return {
 						single_file_support = false,
 					})
 				end,
+				["gopls"] = function()
+					require("lspconfig")["gopls"].setup({
+						capabilities = capabilities,
+						on_attach = on_attach,
+						settings = {
+							gopls = {
+								staticcheck = true,
+							},
+						},
+					})
+				end,
 				function(server_name)
 					require("lspconfig")[server_name].setup({
 						capabilities = capabilities,
@@ -98,18 +109,5 @@ return {
 			require("lspconfig.ui.windows").default_options.border = "rounded"
 		end,
 		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
-		"dmmulroy/tsc.nvim",
-		config = function()
-			require("tsc").setup({})
-		end,
-		keys = {
-			{
-				"<leader>tc",
-				"<cmd>TSC<cr>",
-				"[T]ype [C]heck",
-			},
-		},
 	},
 }

@@ -167,13 +167,6 @@ return {
 		end,
 	},
 	{
-		"echasnovski/mini.comment",
-		config = function()
-			require("mini.comment").setup()
-		end,
-		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
 		"hrsh7th/nvim-cmp",
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp",
@@ -271,19 +264,5 @@ return {
 			})
 		end,
 		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
-		"nvim-pack/nvim-spectre",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-		},
-		opts = {},
-		keys = {
-			{
-				"<leader>ra",
-				"<cmd>lua require('spectre').toggle()<cr>",
-				desc = "[R]epalce [A]ll",
-			},
-		},
 	},
 }
