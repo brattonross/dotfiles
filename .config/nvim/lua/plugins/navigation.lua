@@ -193,10 +193,6 @@ return {
 		event = "BufReadPost",
 	},
 	{
-		"tpope/vim-unimpaired",
-		event = "BufReadPost",
-	},
-	{
 		"stevearc/oil.nvim",
 		opts = {
 			default_file_explorer = true,
