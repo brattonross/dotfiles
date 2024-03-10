@@ -5,9 +5,14 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
+			"L3MON4D3/LuaSnip",
+			"saadparwaiz1/cmp_luasnip",
 		},
 		config = function()
 			local cmp = require("cmp")
+			local luasnip = require("luasnip")
+
+			luasnip.config.setup({})
 
 			cmp.setup({
 				enabled = true,
@@ -25,9 +30,16 @@ return {
 						select = true,
 					}),
 				}),
+				snippet = {
+					expand = function(args)
+						luasnip.lsp_expand(args.body)
+					end,
+				},
 				sources = {
 					{ name = "copilot" },
 					{ name = "nvim_lsp" },
+					{ name = "luasnip" },
+					{ name = "path" },
 				},
 			})
 		end,
