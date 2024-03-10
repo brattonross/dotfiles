@@ -1,41 +1,5 @@
 return {
 	{
-		"ThePrimeagen/harpoon",
-		keys = {
-			{
-				"<leader>1",
-				"<cmd>lua require('harpoon.ui').nav_file(1)<cr>",
-				desc = "Navigate to Harpoon file [1]",
-			},
-			{
-				"<leader>2",
-				"<cmd>lua require('harpoon.ui').nav_file(2)<cr>",
-				desc = "Navigate to Harpoon file [2]",
-			},
-			{
-				"<leader>3",
-				"<cmd>lua require('harpoon.ui').nav_file(3)<cr>",
-				desc = "Navigate to Harpoon file [3]",
-			},
-			{
-				"<leader>4",
-				"<cmd>lua require('harpoon.ui').nav_file(4)<cr>",
-				desc = "Navigate to Harpoon file [4]",
-			},
-			{
-				"<leader>m",
-				"<cmd>lua require('harpoon.mark').add_file()<cr>",
-				desc = "[M]ark file with Harpoon",
-			},
-			{
-				"<C-e>",
-				"<cmd>lua require('harpoon.ui').toggle_quick_menu()<cr>",
-				desc = "[C-e] Toggle Harpoon quick menu",
-			},
-		},
-		event = { "BufReadPost", "BufNewFile" },
-	},
-	{
 		"nvim-telescope/telescope.nvim",
 		version = "*",
 		dependencies = {
@@ -102,6 +66,16 @@ return {
 				"<leader><space>",
 				"<cmd>Telescope buffers<cr>",
 				desc = "[ ] Find existing buffers",
+			},
+			{
+				"<leader>/",
+				"<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
+				desc = "[/] Fuzzy search in current buffer",
+			},
+			{
+				"<leader>s/",
+				"<cmd>lua require('telescope.builtin').live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })<cr>",
+				desc = "Live grep in open files",
 			},
 			{
 				"<leader>sf",
@@ -173,43 +147,7 @@ return {
 				"<cmd>Telescope git_stash<cr>",
 				desc = "[G]it [S]tash",
 			},
-			{
-				"<leader>sp",
-				"<cmd>Telescope project<cr>",
-				desc = "[S]earch [P]rojects",
-			},
 		},
 		event = "VeryLazy",
-	},
-	{
-		"mbbill/undotree",
-		keys = {
-			{
-				"<leader>u",
-				"<cmd>UndotreeToggle<cr>",
-				desc = "[U]ndo tree",
-			},
-		},
-		event = "BufReadPost",
-	},
-	{
-		"stevearc/oil.nvim",
-		opts = {
-			default_file_explorer = true,
-			skip_confirm_for_simple_edits = true,
-			view_options = {
-				show_hidden = true,
-			},
-		},
-		event = "VeryLazy",
-		keys = {
-			{
-				"-",
-				"<cmd>Oil<cr>",
-				{
-					desc = "Open parent directory",
-				},
-			},
-		},
 	},
 }

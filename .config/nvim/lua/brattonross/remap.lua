@@ -4,9 +4,6 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
--- vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
-vim.keymap.set("n", "<leader>dv", vim.cmd.Ex)
-
 -- Move visual blocks with J/K
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
@@ -29,18 +26,15 @@ vim.keymap.set("n", "q:", "<nop>")
 -- Keep yanked buffer content when pasting over a highlight
 vim.keymap.set("v", "p", '"_dP')
 
--- Diagnostic keymaps
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+-- Diagnostic remaps
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 
--- Move window with <C-hjkl>
--- Also covered by vim-tmux-navigator
--- vim.keymap.set("n", "<C-h>", "<C-w>h")
--- vim.keymap.set("n", "<C-j>", "<C-w>j")
--- vim.keymap.set("n", "<C-k>", "<C-w>k")
--- vim.keymap.set("n", "<C-l>", "<C-w>l")
+-- Move between windows
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]])
 vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]])
@@ -48,20 +42,4 @@ vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]])
 vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]])
 vim.keymap.set("t", "<esc>", [[<C-\><C-n>]])
 
--- Resize window with <C-arrows>
-vim.keymap.set("n", "<C-Up>", "<cmd>resize +2<cr>")
-vim.keymap.set("n", "<C-Down>", "<cmd>resize -2<cr>")
-vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize -2<cr>")
-vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize +2<cr>")
-
 vim.keymap.set("n", "<leader>l", "<cmd>Lazy<cr>")
-
-local Util = require("lazy.util")
-
-vim.keymap.set("n", "<leader>tg", function()
-	Util.float_term({ "lazygit" }, { size = { width = 1, height = 1 } })
-end, { desc = "Lazygit (cwd)" })
-
-vim.keymap.set("n", "<leader>ff", function()
-	vim.cmd("silent! %!prettier --stdin-filepath %")
-end, { desc = "[F]ormat [F]ile", noremap = true })

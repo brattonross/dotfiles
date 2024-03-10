@@ -26,33 +26,8 @@ return {
 			},
 		},
 		config = function()
-			local on_attach = function(_, bufnr)
-				local nmap = function(keys, func, desc)
-					if desc then
-						desc = "LSP: " .. desc
-					end
-
-					vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-				end
-
-				nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-				nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-
-				nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-				nmap("gr", "<cmd>Telescope lsp_references<cr>", "[G]oto [R]eferences")
-				nmap("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-				nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-				nmap("<leader>ds", "<cmd>Telescope lsp_document_symbols<cr>", "[D]ocument [S]ymbols")
-				nmap("<leader>ws", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "[W]orkspace [S]ymbols")
-
-				nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-				nmap("<C-s>", vim.lsp.buf.signature_help, "Signature Documentation")
-
-				nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-			end
-
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local mason_lspconfig = require("mason-lspconfig")
 			local servers = {
@@ -76,7 +51,6 @@ return {
 				["biome"] = function()
 					require("lspconfig")["biome"].setup({
 						capabilities = capabilities,
-						on_attach = on_attach,
 						root_dir = require("lspconfig").util.root_pattern("biome.json"),
 						single_file_support = false,
 					})
@@ -84,7 +58,6 @@ return {
 				["gopls"] = function()
 					require("lspconfig")["gopls"].setup({
 						capabilities = capabilities,
-						on_attach = on_attach,
 						settings = {
 							gopls = {
 								staticcheck = true,
@@ -95,7 +68,6 @@ return {
 				function(server_name)
 					require("lspconfig")[server_name].setup({
 						capabilities = capabilities,
-						on_attach = on_attach,
 						settings = servers[server_name],
 						filetypes = (servers[server_name] or {}).filetypes,
 					})
@@ -106,8 +78,61 @@ return {
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				border = "single",
 			})
+
 			require("lspconfig.ui.windows").default_options.border = "rounded"
 		end,
 		event = { "BufReadPost", "BufNewFile" },
+		keys = {
+			{
+				"gd",
+				"<cmd>lua require('telescope.builtin').lsp_definitions()<cr>",
+				desc = "Goto Definition",
+			},
+			{
+				"gr",
+				"<cmd>lua require('telescope.builtin').lsp_references()<cr>",
+				desc = "Goto References",
+			},
+			{
+				"gI",
+				"<cmd>lua require('telescope.builtin').lsp_implementations()<cr>",
+				desc = "Goto Implementation",
+			},
+			{
+				"<leader>D",
+				"<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>",
+				desc = "Type Definition",
+			},
+			{
+				"<leader>ds",
+				"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
+				desc = "Document Symbols",
+			},
+			{
+				"<leader>ws",
+				"<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>",
+				desc = "Workspace Symbols",
+			},
+			{
+				"<leader>rn",
+				"<cmd>lua vim.lsp.buf.rename()<cr>",
+				desc = "Rename",
+			},
+			{
+				"<leader>ca",
+				"<cmd>lua vim.lsp.buf.code_action()<cr>",
+				desc = "Code Action",
+			},
+			{
+				"K",
+				"<cmd>lua vim.lsp.buf.hover()<cr>",
+				desc = "Hover Documentation",
+			},
+			{
+				"gD",
+				"<cmd>lua vim.lsp.buf.declaration()<cr>",
+				desc = "Goto Declaration",
+			},
+		},
 	},
 }
