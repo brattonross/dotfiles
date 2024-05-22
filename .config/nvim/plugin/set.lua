@@ -8,6 +8,7 @@ vim.opt.hlsearch = false
 vim.opt.inccommand = "split"
 vim.opt.incsearch = true
 vim.opt.isfname:append("@-@")
+vim.opt.laststatus = 3
 vim.opt.list = true
 vim.opt.listchars:append({
 	eol = "↵",
@@ -34,5 +35,5 @@ vim.opt.termguicolors = true
 vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 vim.opt.updatetime = 250
-vim.opt.winbar = " %m %f "
+-- vim.opt.winbar = " %m %f "
 vim.opt.wrap = false

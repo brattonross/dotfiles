@@ -1,13 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-vim.loader.enable()
-
-require("brattonross.set")
-require("brattonross.remap")
-require("brattonross.autocommands")
-
--- Ensure lazy is installed
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
@@ -21,13 +14,17 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Go!
 require("lazy").setup("plugins", {
 	lazy = true,
+	checker = {
+		enabled = true,
+		notify = false,
+	},
+	change_detection = {
+		enabled = true,
+		notify = false,
+	},
 	ui = {
 		border = "rounded",
 	},
 })
-
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et

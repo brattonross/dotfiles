@@ -4,21 +4,22 @@ return {
 		config = function()
 			require("conform").setup({
 				formatters_by_ft = {
-					astro = { { "biome", "prettierd", "prettier" } },
-					css = { { "biome", "prettierd", "prettier" } },
+					astro = { { "biome", "prettierd" } },
+					css = { { "biome", "prettierd" } },
+					gleam = { "gleam", "rustywind" },
 					go = { { "gofmt" } },
 					html = { { "prettierd", "prettier" } },
-					javascript = { { "biome", "prettierd", "prettier" } },
-					javascriptreact = { { "biome", "prettierd", "prettier" } },
-					json = { { "biome", "prettierd", "prettier" } },
-					jsonc = { { "biome", "prettierd", "prettier" } },
+					javascript = { { "biome", "prettierd" } },
+					javascriptreact = { { "biome", "prettierd" } },
+					json = { { "biome", "prettierd" } },
+					jsonc = { { "biome", "prettierd" } },
 					lua = { "stylua" },
-					markdown = { { "prettierd", "prettier" } },
-					templ = { "rustywind" },
+					markdown = { { "prettierd" } },
+					templ = { "templ", "rustywind" },
 					template = { "rustywind" },
-					typescript = { { "biome", "prettierd", "prettier" } },
-					typescriptreact = { { "biome", "prettierd", "prettier" } },
-					yaml = { { "prettierd", "prettier" } },
+					typescript = { { "biome", "prettierd" } },
+					typescriptreact = { { "biome", "prettierd" } },
+					yaml = { { "prettierd" } },
 				},
 				format_on_save = function(bufnr)
 					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
@@ -49,17 +50,10 @@ return {
 				desc = "Re-enable autoformat-on-save",
 			})
 
-			local util = require("conform.util")
-
-			require("conform.formatters.biome").cwd = require("conform.util").root_file({ "biome.json" })
-			require("conform.formatters.biome").condition = function(self, ctx)
-				return util.root_file({ "biome.json" })(self, ctx) ~= nil
-			end
-
 			vim.api.nvim_create_user_command("Format", function()
 				local result = require("conform").format({
 					timeout_ms = 2000,
-					-- lsp_fallback = true,
+					lsp_fallback = true,
 				})
 				if result == nil then
 					vim.notify("No formatter found for this filetype", vim.log.levels.WARN)

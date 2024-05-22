@@ -2,6 +2,7 @@ return {
 	{
 		-- "github/copilot.vim",
 		"zbirenbaum/copilot.lua",
+		enabled = false,
 		cmd = "Copilot",
 		config = function()
 			require("copilot").setup({
@@ -26,6 +27,7 @@ return {
 	},
 	{
 		"zbirenbaum/copilot-cmp",
+		enabled = false,
 		event = { "InsertEnter" },
 		config = function()
 			require("copilot_cmp").setup()

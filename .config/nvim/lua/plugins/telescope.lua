@@ -11,9 +11,13 @@ return {
 					return vim.fn.executable("make") == 1
 				end,
 			},
-			"debugloop/telescope-undo.nvim",
-			"nvim-telescope/telescope-project.nvim",
 			"nvim-telescope/telescope-ui-select.nvim",
+			{
+				"nvim-telescope/telescope-smart-history.nvim",
+				dependencies = {
+					"kkharji/sqlite.lua",
+				},
+			},
 		},
 		config = function()
 			local telescope_config = require("telescope.config")
@@ -22,6 +26,8 @@ return {
 			table.insert(vimgrep_arguments, "--hidden")
 			table.insert(vimgrep_arguments, "--glob")
 			table.insert(vimgrep_arguments, "!**/{.git,.sl,node_modules}}")
+
+			local data = assert(vim.fn.stdpath("data")) --[[@as string]]
 
 			require("telescope").setup({
 				defaults = {
@@ -34,6 +40,10 @@ return {
 					vimgrep_arguments = vimgrep_arguments,
 				},
 				extensions = {
+					history = {
+						path = vim.fs.joinpath(data, "telescope_history.sqlite3"),
+						limit = 100,
+					},
 					["ui-select"] = {
 						require("telescope.themes").get_dropdown({}),
 					},
@@ -53,7 +63,7 @@ return {
 
 			-- Enable telescope fzf native, if installed
 			pcall(require("telescope").load_extension, "fzf")
-			require("telescope").load_extension("project")
+			require("telescope").load_extension("smart_history")
 			require("telescope").load_extension("ui-select")
 		end,
 		keys = {
