@@ -1,77 +1,8 @@
 return {
 	{
-		"andreypopp/vim-colors-plain",
-		enabled = false,
-		lazy = false,
-		priority = 1000,
-		config = function()
-			vim.cmd.colorscheme("plain")
-
-			-- Set nvim colors
-			vim.cmd("highlight NormalFloat guibg=none ctermbg=none")
-			vim.cmd("highlight WinBarNC  guibg=none ctermbg=none")
-			vim.cmd("highlight Normal ctermbg=NONE guibg=NONE")
-			vim.cmd("highlight NonText ctermbg=NONE guibg=NONE")
-			vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#43484E", bg = "None" })
-			vim.api.nvim_set_hl(0, "winbar", {
-				fg = "#777B84",
-				bg = "None",
-			})
-		end,
-	},
-	{
-		"ellisonleao/gruvbox.nvim",
-		enabled = true,
-		-- lazy = false,
-		-- priority = 1000,
-		config = function()
-			-- vim.o.background = "dark"
-			-- vim.cmd("colorscheme gruvbox")
-		end,
-	},
-	{
-		"eldritch-theme/eldritch.nvim",
-		enabled = true,
-		-- lazy = false,
-		-- priority = 1000,
-		config = function()
-			require("eldritch").setup({
-				styles = {
-					comments = { italic = false },
-					keywords = { italic = false },
-				},
-			})
-			-- vim.cmd("colorscheme eldritch")
-		end,
-	},
-	{
-		"sainnhe/gruvbox-material",
-		enabled = true,
-		lazy = false,
-		priority = 1000,
-		config = function()
-			-- vim.cmd("set termguicolors")
-			-- vim.cmd("set background=dark")
-			-- vim.cmd("let g:gruvbox_material_background = 'soft'")
-			-- vim.cmd("let g:gruvbox_material_better_performance = 1")
-			-- vim.cmd("colorscheme gruvbox-material")
-		end,
-	},
-	{
-		"sainnhe/everforest",
-		enabled = true,
-		-- lazy = false,
-		-- priority = 1000,
-		config = function()
-			-- vim.cmd("colorscheme everforest")
-		end,
-	},
-	{
-		"RRethy/base16-nvim",
-	},
-	{
 		"catppuccin/nvim",
 		name = "catppuccin",
+		enabled = false,
 		lazy = false,
 		priority = 1000,
 		config = function()
@@ -406,7 +337,6 @@ return {
 						return {
 							IblIndent = { fg = colors.mantle },
 							IblScope = { fg = colors.surface1 },
-
 							LineNr = { fg = colors.surface1 },
 						}
 					end,
@@ -414,6 +344,15 @@ return {
 			})
 
 			vim.api.nvim_command("colorscheme catppuccin")
+		end,
+	},
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		priority = 1000,
+		opts = {},
+		config = function()
+			vim.api.nvim_command("colorscheme tokyonight-night")
 		end,
 	},
 }

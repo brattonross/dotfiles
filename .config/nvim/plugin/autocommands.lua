@@ -41,7 +41,12 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	pattern = "*",
 	callback = function()
-		if vim.bo.filetype == "" or vim.bo.buftype == "terminal" or vim.bo.buftype == "nofile" then
+		if
+			vim.bo.filetype == ""
+			or vim.bo.buftype == "terminal"
+			or vim.bo.buftype == "nofile"
+			or vim.bo.filetype == "qf"
+		then
 			return
 		end
 

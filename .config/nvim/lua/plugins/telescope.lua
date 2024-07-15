@@ -12,12 +12,6 @@ return {
 				end,
 			},
 			"nvim-telescope/telescope-ui-select.nvim",
-			{
-				"nvim-telescope/telescope-smart-history.nvim",
-				dependencies = {
-					"kkharji/sqlite.lua",
-				},
-			},
 		},
 		config = function()
 			local telescope_config = require("telescope.config")
@@ -61,10 +55,8 @@ return {
 				},
 			})
 
-			-- Enable telescope fzf native, if installed
 			pcall(require("telescope").load_extension, "fzf")
-			require("telescope").load_extension("smart_history")
-			require("telescope").load_extension("ui-select")
+			pcall(require("telescope").load_extension, "ui-select")
 		end,
 		keys = {
 			{
