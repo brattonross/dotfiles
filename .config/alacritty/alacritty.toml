@@ -1,0 +1,14 @@
+import = ["~/.config/alacritty/tokyo-night.toml"]
+
+[window]
+dynamic_padding = true
+
+[font]
+normal = { family = "BerkeleyMono Nerd Font" }
+bold = { family = "BerkeleyMono Nerd Font" }
+
+[cursor]
+style = { shape = "Block", blinking = "Never" }
+
+[mouse]
+hide_when_typing = true
