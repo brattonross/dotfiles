@@ -8,11 +8,10 @@ vim.opt.hlsearch = false
 vim.opt.inccommand = "split"
 vim.opt.incsearch = true
 vim.opt.isfname:append("@-@")
-vim.opt.laststatus = 3
 vim.opt.list = true
 vim.opt.listchars:append({
 	eol = "↵",
-	space = "⋅",
+	space = "·",
 	tab = "» ",
 })
 vim.opt.mouse = "a"

@@ -3,23 +3,35 @@ return {
 		"stevearc/conform.nvim",
 		config = function()
 			require("conform").setup({
+				formatters = {
+					biome = {
+						require_cwd = true,
+					},
+					prettierd = {
+						require_cwd = true,
+					},
+				},
 				formatters_by_ft = {
-					astro = { { "biome", "prettierd" } },
-					css = { { "biome", "prettierd" } },
+					astro = {
+						"biome",
+						"prettierd",
+						stop_after_first = true,
+					},
+					css = { "biome", "prettierd", stop_after_first = true },
 					gleam = { "gleam", "rustywind" },
-					go = { { "gofmt" } },
-					html = { { "prettierd", "prettier" } },
-					javascript = { { "biome", "prettierd" } },
-					javascriptreact = { { "biome", "prettierd" } },
-					json = { { "biome", "prettierd" } },
-					jsonc = { { "biome", "prettierd" } },
+					go = { "gofmt" },
+					html = { "biome" },
+					javascript = { "biome", "prettierd", stop_after_first = true },
+					javascriptreact = { "biome", "prettierd", stop_after_first = true },
+					json = { "biome", "prettierd", stop_after_first = true },
+					jsonc = { "biome", "prettierd", stop_after_first = true },
 					lua = { "stylua" },
-					markdown = { { "prettierd" } },
+					markdown = { "prettierd" },
 					templ = { "templ", "rustywind" },
 					template = { "rustywind" },
-					typescript = { { "biome", "prettierd" } },
-					typescriptreact = { { "biome", "prettierd" } },
-					yaml = { { "prettierd" } },
+					typescript = { "biome", "prettierd", stop_after_first = true },
+					typescriptreact = { "biome", "prettierd", stop_after_first = true },
+					yaml = { "prettierd" },
 				},
 				format_on_save = function(bufnr)
 					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then

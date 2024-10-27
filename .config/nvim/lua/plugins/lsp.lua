@@ -1,79 +1,7 @@
 return {
 	{
 		"neovim/nvim-lspconfig",
-		dependencies = {
-			{
-				"williamboman/mason.nvim",
-				build = ":MasonUpdate",
-				opts = {
-					ui = {
-						border = "single",
-					},
-				},
-			},
-			{
-				"williamboman/mason-lspconfig.nvim",
-			},
-			{
-				"j-hui/fidget.nvim",
-				tag = "legacy",
-				event = "LspAttach",
-				opts = {
-					window = {
-						blend = 0,
-					},
-				},
-			},
-		},
 		config = function()
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
-			local mason_lspconfig = require("mason-lspconfig")
-			local servers = {
-				lua_ls = {
-					Lua = {
-						runtime = { version = "LuaJIT" },
-						workspace = {
-							checkThirdParty = false,
-							library = vim.api.nvim_get_runtime_file("", true),
-						},
-						telemetry = { enable = false },
-					},
-				},
-			}
-
-			mason_lspconfig.setup({
-				ensure_installed = vim.tbl_keys(servers),
-			})
-
-			mason_lspconfig.setup_handlers({
-				["biome"] = function()
-					require("lspconfig")["biome"].setup({
-						capabilities = capabilities,
-						root_dir = require("lspconfig").util.root_pattern("biome.json"),
-						single_file_support = false,
-					})
-				end,
-				["gopls"] = function()
-					require("lspconfig")["gopls"].setup({
-						capabilities = capabilities,
-						settings = {
-							gopls = {
-								staticcheck = true,
-							},
-						},
-					})
-				end,
-				function(server_name)
-					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
-						settings = servers[server_name],
-						filetypes = (servers[server_name] or {}).filetypes,
-					})
-				end,
-			})
-
 			-- Single border around LSP floating windows
 			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 				border = "single",
@@ -134,5 +62,83 @@ return {
 				desc = "Goto Declaration",
 			},
 		},
+	},
+	{
+		"j-hui/fidget.nvim",
+		dependencies = {
+			"neovim/nvim-lspconfig",
+		},
+		tag = "legacy",
+		event = "LspAttach",
+		opts = {
+			window = {
+				blend = 0,
+			},
+		},
+	},
+	{
+		"williamboman/mason.nvim",
+		dependencies = {
+			"williamboman/mason-lspconfig.nvim",
+			"neovim/nvim-lspconfig",
+		},
+		build = ":MasonUpdate",
+		config = function()
+			require("mason").setup({
+				ui = {
+					border = "single",
+				},
+			})
+
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+
+			local mason_lspconfig = require("mason-lspconfig")
+			local servers = {
+				lua_ls = {
+					Lua = {
+						runtime = { version = "LuaJIT" },
+						workspace = {
+							checkThirdParty = false,
+							library = vim.api.nvim_get_runtime_file("", true),
+						},
+						telemetry = { enable = false },
+					},
+				},
+			}
+
+			mason_lspconfig.setup({
+				ensure_installed = vim.tbl_keys(servers),
+				handlers = {
+					["biome"] = function()
+						require("lspconfig")["biome"].setup({
+							capabilities = capabilities,
+							root_dir = require("lspconfig").util.root_pattern("biome.json"),
+							single_file_support = false,
+						})
+					end,
+					["gopls"] = function()
+						require("lspconfig")["gopls"].setup({
+							capabilities = capabilities,
+							settings = {
+								gopls = {
+									staticcheck = true,
+								},
+							},
+						})
+					end,
+					function(server_name)
+						if server_name == "tsserver" then
+							server_name = "ts_ls"
+						end
+						require("lspconfig")[server_name].setup({
+							capabilities = capabilities,
+							settings = servers[server_name],
+							filetypes = (servers[server_name] or {}).filetypes,
+						})
+					end,
+				},
+			})
+		end,
 	},
 }

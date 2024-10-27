@@ -1,8 +1,7 @@
 return {
 	{
 		"catppuccin/nvim",
-		name = "catppuccin",
-		enabled = false,
+		name = "catppuccin-gruvbox",
 		lazy = false,
 		priority = 1000,
 		config = function()
@@ -342,17 +341,52 @@ return {
 					end,
 				},
 			})
-
-			vim.api.nvim_command("colorscheme catppuccin")
 		end,
 	},
 	{
-		"folke/tokyonight.nvim",
+		"vague2k/vague.nvim",
+		config = function()
+			require("vague").setup({
+				transparent = false,
+				style = {
+					comments = "none",
+					strings = "none",
+				},
+			})
+		end,
+	},
+	{
+		"slugbyte/lackluster.nvim",
+		enabled = false,
 		lazy = false,
 		priority = 1000,
-		opts = {},
+	},
+	{
+		"chriskempson/base16-vim",
+		lazy = false,
+		priority = 1000,
+	},
+	{
+		"morhetz/gruvbox",
+		lazy = false,
+		priority = 1000,
+	},
+	{
+		"scottmckendry/cyberdream.nvim",
+		lazy = false,
+		priority = 1000,
 		config = function()
-			vim.api.nvim_command("colorscheme tokyonight-night")
+			require("cyberdream").setup({
+				theme = {
+					-- variant = "light",
+					highlights = {
+						CursorLine = { bg = "#1e2124" },
+						StatusLine = { fg = "#ffffff", bg = "#3c4048" },
+						StatusLineNC = { fg = "#ffffff", bg = "#3c4048" },
+						Whitespace = { link = "NonText" },
+					},
+				},
+			})
 		end,
 	},
 }

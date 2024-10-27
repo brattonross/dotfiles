@@ -11,14 +11,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	pattern = "*",
 })
 
--- Resize splits on VimResized
-vim.api.nvim_create_autocmd("VimResized", {
-	callback = function()
-		vim.cmd("tabdo wincmd =")
-	end,
-	group = augroup("resize_splits"),
-})
-
 -- Set wrap and spellcheck for certain filetypes
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = { "markdown", "gitcommit" },
@@ -35,35 +27,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 		vim.opt.formatoptions:remove({ "c", "r", "o" })
 	end,
 	group = augroup("comments_on_new_line"),
-})
-
--- Set winbar except for terminal windows and floating windows
-vim.api.nvim_create_autocmd("BufWinEnter", {
-	pattern = "*",
-	callback = function()
-		if
-			vim.bo.filetype == ""
-			or vim.bo.buftype == "terminal"
-			or vim.bo.buftype == "nofile"
-			or vim.bo.filetype == "qf"
-		then
-			return
-		end
-
-		local filepath = vim.fn.fnamemodify(vim.fn.expand("%:p"), ":~:.")
-		local separator = " ❯ "
-		local parts = vim.fn.split(filepath, "/")
-		local res = vim.fn.filter(parts, function(_, v)
-			return v ~= "" and v ~= nil
-		end)
-		local winbar_str = vim.fn.join(res, separator)
-
-		vim.wo.winbar = " " .. winbar_str
-
-		vim.cmd("highlight WinBar guifg=@text guibg=None")
-		vim.cmd("highlight WinBarNC guifg=@text guibg=None")
-	end,
-	group = augroup("winbar"),
 })
 
 -- Disable relative line numbers and signcolumn in terminal windows
