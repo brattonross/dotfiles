@@ -1,0 +1,41 @@
+font-size = 10
+font-style = Regular
+font-thicken = true
+font-family = Berkeley Mono
+
+cursor-style-blink = false
+mouse-hide-while-typing = true
+
+window-decoration = false
+
+shell-integration-features = no-cursor
+
+confirm-close-surface = false
+
+adjust-cell-height = -1
+
+# theme: cyberdream
+palette = 0=#16181a
+palette = 1=#ff6e5e
+palette = 2=#5eff6c
+palette = 3=#f1ff5e
+palette = 4=#5ea1ff
+palette = 5=#bd5eff
+palette = 6=#5ef1ff
+palette = 7=#ffffff
+palette = 8=#16181a
+palette = 9=#ff6e5e
+palette = 10=#5eff6c
+palette = 11=#f1ff5e
+palette = 12=#5ea1ff
+palette = 13=#bd5eff
+palette = 14=#5ef1ff
+palette = 15=#ffffff
+
+background = 16181a
+foreground = ffffff
+
+cursor-color = ffffff
+
+selection-background = 3c4048
+selection-foreground = ffffff
