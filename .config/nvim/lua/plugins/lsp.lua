@@ -1,144 +1,110 @@
 return {
 	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			-- Single border around LSP floating windows
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-				border = "single",
-			})
-
-			require("lspconfig.ui.windows").default_options.border = "rounded"
-		end,
-		event = { "BufReadPost", "BufNewFile" },
-		keys = {
-			{
-				"gd",
-				"<cmd>lua require('telescope.builtin').lsp_definitions()<cr>",
-				desc = "Goto Definition",
-			},
-			{
-				"gr",
-				"<cmd>lua require('telescope.builtin').lsp_references()<cr>",
-				desc = "Goto References",
-			},
-			{
-				"gI",
-				"<cmd>lua require('telescope.builtin').lsp_implementations()<cr>",
-				desc = "Goto Implementation",
-			},
-			{
-				"<leader>D",
-				"<cmd>lua require('telescope.builtin').lsp_type_definitions()<cr>",
-				desc = "Type Definition",
-			},
-			{
-				"<leader>ds",
-				"<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>",
-				desc = "Document Symbols",
-			},
-			{
-				"<leader>ws",
-				"<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>",
-				desc = "Workspace Symbols",
-			},
-			{
-				"<leader>rn",
-				"<cmd>lua vim.lsp.buf.rename()<cr>",
-				desc = "Rename",
-			},
-			{
-				"<leader>ca",
-				"<cmd>lua vim.lsp.buf.code_action()<cr>",
-				desc = "Code Action",
-			},
-			{
-				"K",
-				"<cmd>lua vim.lsp.buf.hover()<cr>",
-				desc = "Hover Documentation",
-			},
-			{
-				"gD",
-				"<cmd>lua vim.lsp.buf.declaration()<cr>",
-				desc = "Goto Declaration",
-			},
-		},
-	},
-	{
-		"j-hui/fidget.nvim",
-		dependencies = {
-			"neovim/nvim-lspconfig",
-		},
-		tag = "legacy",
-		event = "LspAttach",
+		"folke/lazydev.nvim",
+		ft = "lua",
 		opts = {
-			window = {
-				blend = 0,
+			library = {
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
 			},
 		},
 	},
+	{ "Bilal2453/luvit-meta", lazy = true },
 	{
-		"williamboman/mason.nvim",
+		"neovim/nvim-lspconfig",
 		dependencies = {
+			{ "williamboman/mason.nvim", config = true },
 			"williamboman/mason-lspconfig.nvim",
-			"neovim/nvim-lspconfig",
+			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			{ "j-hui/fidget.nvim", opts = {} },
+			-- "hrsh7th/cmp-nvim-lsp",
+			"saghen/blink.cmp",
 		},
-		build = ":MasonUpdate",
-		config = function()
-			require("mason").setup({
-				ui = {
-					border = "single",
-				},
-			})
-
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
-			local mason_lspconfig = require("mason-lspconfig")
-			local servers = {
+		opts = {
+			servers = {
+				astro = {},
+				biome = {},
+				clangd = {},
+				cssls = {},
+				gopls = {},
+				html = {},
+				jsonls = {},
 				lua_ls = {
-					Lua = {
-						runtime = { version = "LuaJIT" },
-						workspace = {
-							checkThirdParty = false,
-							library = vim.api.nvim_get_runtime_file("", true),
+					settings = {
+						Lua = {
+							completion = {
+								callSnippet = "Replace",
+							},
+							diagnostics = { disable = { "missing-fields" } },
 						},
-						telemetry = { enable = false },
 					},
 				},
-			}
+				omnisharp = {},
+				rust_analyzer = {},
+				templ = {},
+				ts_ls = {},
+				zls = {},
+			},
+		},
+		config = function(_, opts)
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("brattonross-lsp-attach", { clear = true }),
+				callback = function(event)
+					local map = function(keys, func, desc, mode)
+						mode = mode or "n"
+						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					end
 
-			mason_lspconfig.setup({
-				ensure_installed = vim.tbl_keys(servers),
-				handlers = {
-					["biome"] = function()
-						require("lspconfig")["biome"].setup({
-							capabilities = capabilities,
-							root_dir = require("lspconfig").util.root_pattern("biome.json"),
-							single_file_support = false,
+					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+					map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+					map(
+						"<leader>ws",
+						require("telescope.builtin").lsp_dynamic_workspace_symbols,
+						"[W]orkspace [S]ymbols"
+					)
+					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
+					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+					map("gl", vim.diagnostic.open_float, "Open float")
+
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+						local highlight_augroup =
+							vim.api.nvim_create_augroup("brattonross-lsp-highlight", { clear = false })
+						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+							buffer = event.buf,
+							group = highlight_augroup,
+							callback = vim.lsp.buf.document_highlight,
 						})
-					end,
-					["gopls"] = function()
-						require("lspconfig")["gopls"].setup({
-							capabilities = capabilities,
-							settings = {
-								gopls = {
-									staticcheck = true,
-								},
-							},
+
+						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+							buffer = event.buf,
+							group = highlight_augroup,
+							callback = vim.lsp.buf.clear_references,
 						})
-					end,
-					function(server_name)
-						if server_name == "tsserver" then
-							server_name = "ts_ls"
-						end
-						require("lspconfig")[server_name].setup({
-							capabilities = capabilities,
-							settings = servers[server_name],
-							filetypes = (servers[server_name] or {}).filetypes,
+
+						vim.api.nvim_create_autocmd("LspDetach", {
+							group = vim.api.nvim_create_augroup("brattonross-lsp-detach", { clear = true }),
+							callback = function(event2)
+								vim.lsp.buf.clear_references()
+								vim.api.nvim_clear_autocmds({ group = "brattonross-lsp-highlight", buffer = event2.buf })
+							end,
 						})
-					end,
-				},
+					end
+				end,
 			})
+
+			local lspconfig = require("lspconfig")
+			for server, config in pairs(opts.servers) do
+				config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+				lspconfig[server].setup(config)
+			end
+
+			require("mason").setup()
+			require("mason-tool-installer").setup({ ensure_installed = vim.tbl_keys(opts.servers or {}) })
+			require("mason-lspconfig").setup()
 		end,
 	},
 }

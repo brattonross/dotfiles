@@ -14,142 +14,68 @@ return {
 			"nvim-telescope/telescope-ui-select.nvim",
 		},
 		config = function()
-			local telescope_config = require("telescope.config")
-			local vimgrep_arguments = { unpack(telescope_config.values.vimgrep_arguments) }
+			local telescope = require("telescope")
 
-			table.insert(vimgrep_arguments, "--hidden")
-			table.insert(vimgrep_arguments, "--glob")
-			table.insert(vimgrep_arguments, "!**/{.git,.sl,node_modules}}")
-
-			local data = assert(vim.fn.stdpath("data")) --[[@as string]]
-
-			require("telescope").setup({
-				defaults = {
-					mappings = {
-						i = {
-							["<C-u>"] = false,
-							["<C-d>"] = false,
-						},
-					},
-					vimgrep_arguments = vimgrep_arguments,
-				},
+			telescope.setup({
 				extensions = {
-					history = {
-						path = vim.fs.joinpath(data, "telescope_history.sqlite3"),
-						limit = 100,
-					},
+					fzf = {},
 					["ui-select"] = {
-						require("telescope.themes").get_dropdown({}),
+						require("telescope.themes").get_ivy({}),
 					},
 				},
 				pickers = {
+					buffers = {
+						theme = "ivy",
+					},
+					commands = {
+						theme = "ivy",
+					},
+					current_buffer_fuzzy_find = {
+						theme = "ivy",
+					},
+					diagnostics = {
+						theme = "ivy",
+					},
 					find_files = {
-						find_command = {
-							"rg",
-							"--files",
-							"--hidden",
-							"--glob",
-							"!**/{.git,.sl,node_modules}",
-						},
+						theme = "ivy",
+					},
+					grep_string = {
+						theme = "ivy",
+					},
+					help_tags = {
+						theme = "ivy",
+					},
+					highlights = {
+						theme = "ivy",
+					},
+					keymaps = {
+						theme = "ivy",
+					},
+					live_grep = {
+						theme = "ivy",
+					},
+					oldfiles = {
+						theme = "ivy",
 					},
 				},
 			})
 
-			pcall(require("telescope").load_extension, "fzf")
-			pcall(require("telescope").load_extension, "ui-select")
+			pcall(telescope.load_extension, "fzf")
+			pcall(telescope.load_extension, "ui-select")
+
+			vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles)
+			vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers)
+			vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files)
+			vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags)
+			vim.keymap.set("n", "<leader>si", require("telescope.builtin").highlights)
+			vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string)
+			vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep)
+			vim.keymap.set("n", "<leader>sk", require("telescope.builtin").keymaps)
+			vim.keymap.set("n", "<leader>sr", require("telescope.builtin").resume)
+			vim.keymap.set("n", "<leader>sn", function()
+				require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config") })
+			end)
 		end,
-		keys = {
-			{
-				"<leader>?",
-				"<cmd>Telescope oldfiles<cr>",
-				desc = "[?] Find recently opened files",
-			},
-			{
-				"<leader><space>",
-				"<cmd>Telescope buffers<cr>",
-				desc = "[ ] Find existing buffers",
-			},
-			{
-				"<leader>/",
-				"<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown({ previewer = false }))<cr>",
-				desc = "[/] Fuzzy search in current buffer",
-			},
-			{
-				"<leader>s/",
-				"<cmd>lua require('telescope.builtin').live_grep({ grep_open_files = true, prompt_title = 'Live Grep in Open Files' })<cr>",
-				desc = "Live grep in open files",
-			},
-			{
-				"<leader>sf",
-				"<cmd>Telescope find_files<cr>",
-				desc = "[S]earch [F]iles",
-			},
-			{
-				"<leader>sh",
-				"<cmd>Telescope help_tags<cr>",
-				desc = "[S]earch [H]elp",
-			},
-			{
-				"<leader>si",
-				"<cmd>Telescope highlights<cr>",
-				desc = "[S]earch H[i]ghlights",
-			},
-			{
-				"<leader>sw",
-				"<cmd>Telescope grep_string<cr>",
-				desc = "[S]earch current [W]ord",
-			},
-			{
-				"<leader>sg",
-				"<cmd>Telescope live_grep<cr>",
-				desc = "[S]earch by [G]rep",
-			},
-			{
-				"<leader>sd",
-				"<cmd>Telescope diagnostics<cr>",
-				desc = "[S]earch [D]iagnostics",
-			},
-			{
-				"<leader>sc",
-				"<cmd>Telescope commands<cr>",
-				desc = "[S]earch [C]ommands",
-			},
-			{
-				"<leader>sk",
-				"<cmd>Telescope keymaps<cr>",
-				desc = "[S]earch [K]eymaps",
-			},
-			{
-				"<leader>sr",
-				"<cmd>Telescope resume<cr>",
-				desc = "[S]earch [R]esume",
-			},
-			{
-				"<leader>gs",
-				"<cmd>Telescope git_status<cr>",
-				desc = "[G]it [S]tatus",
-			},
-			{
-				"<leader>gc",
-				"<cmd>Telescope git_commits<cr>",
-				desc = "[G]it [C]ommits",
-			},
-			{
-				"<leader>gb",
-				"<cmd>Telescope git_branches<cr>",
-				desc = "[G]it [B]ranches",
-			},
-			{
-				"<leader>gf",
-				"<cmd>Telescope git_bcommits<cr>",
-				desc = "[G]it [F]ile History",
-			},
-			{
-				"<leader>gS",
-				"<cmd>Telescope git_stash<cr>",
-				desc = "[G]it [S]tash",
-			},
-		},
 		event = "VeryLazy",
 	},
 }

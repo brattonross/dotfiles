@@ -1,41 +1,109 @@
+# theme = GruvboxDark
+
 font-size = 10
 font-style = Regular
 font-thicken = true
-font-family = Berkeley Mono
+font-family = BerkeleyMono
+
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+font-feature = ss03
+font-feature = ss04
+font-feature = ss05
+font-feature = cv01
+font-feature = cv02
+font-feature = cv03
+font-feature = cv04
+font-feature = cv06
 
 cursor-style-blink = false
 mouse-hide-while-typing = true
 
 window-decoration = false
+window-theme = ghostty
 
 shell-integration-features = no-cursor
 
 confirm-close-surface = false
 
-adjust-cell-height = -1
+# tabs
+keybind = alt+t=new_tab
+keybind = alt+n=next_tab
+keybind = alt+p=previous_tab
+
+keybind = alt+1=goto_tab:1
+keybind = alt+2=goto_tab:2
+keybind = alt+3=goto_tab:3
+keybind = alt+4=goto_tab:4
+keybind = alt+5=goto_tab:5
+
+keybind = alt+shift+l=move_tab:1
+keybind = alt+shift+h=move_tab:-1
+
+# splits
+keybind = alt+v=new_split:right
+keybind = alt+x=new_split:down
+keybind = alt+h=goto_split:left
+keybind = alt+j=goto_split:bottom
+keybind = alt+k=goto_split:top
+keybind = alt+l=goto_split:right
 
 # theme: cyberdream
-palette = 0=#16181a
-palette = 1=#ff6e5e
-palette = 2=#5eff6c
-palette = 3=#f1ff5e
-palette = 4=#5ea1ff
-palette = 5=#bd5eff
-palette = 6=#5ef1ff
-palette = 7=#ffffff
-palette = 8=#16181a
-palette = 9=#ff6e5e
-palette = 10=#5eff6c
-palette = 11=#f1ff5e
-palette = 12=#5ea1ff
-palette = 13=#bd5eff
-palette = 14=#5ef1ff
-palette = 15=#ffffff
+# palette = 0=#16181a
+# palette = 1=#ff6e5e
+# palette = 2=#5eff6c
+# palette = 3=#f1ff5e
+# palette = 4=#5ea1ff
+# palette = 5=#bd5eff
+# palette = 6=#5ef1ff
+# palette = 7=#ffffff
+# palette = 8=#16181a
+# palette = 9=#ff6e5e
+# palette = 10=#5eff6c
+# palette = 11=#f1ff5e
+# palette = 12=#5ea1ff
+# palette = 13=#bd5eff
+# palette = 14=#5ef1ff
+# palette = 15=#ffffff
+# 
+# background = 16181a
+# foreground = ffffff
+# 
+# cursor-color = 5eff6c
+# 
+# selection-background = 3c4048
+# selection-foreground = ffffff
 
-background = 16181a
-foreground = ffffff
+# theme: carbonfox
+background = #161616
+foreground = #f2f4f8
+selection-background = #2a2a2a
+selection-foreground = #f2f4f8
+cursor-color = #f2f4f8
 
-cursor-color = ffffff
+# normal
+palette = 0=#282828
+palette = 1=#ee5396
+palette = 2=#25be6a
+palette = 3=#08bdba
+palette = 4=#78a9ff
+palette = 5=#be95ff
+palette = 6=#33b1ff
+palette = 7=#dfdfe0
 
-selection-background = 3c4048
-selection-foreground = ffffff
+# bright
+palette = 8=#484848
+palette = 9=#f16da6
+palette = 10=#46c880
+palette = 11=#2dc7c4
+palette = 12=#8cb6ff
+palette = 13=#c8a5ff
+palette = 14=#52bdff
+palette = 15=#e4e4e5
+
+# extended colors
+palette = 16=#3ddbd9
+
+# vim set ft=conf

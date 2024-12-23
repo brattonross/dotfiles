@@ -40,7 +40,37 @@ return {
 						mantle = "#f0ebce",
 						crust = "#e8e3c8",
 					},
+					macchiato = {
+						-- wez
+						rosewater = "#ff5555",
+						flamingo = "#ff5555",
+						red = "#ff5555",
+						maroon = "#ff5555",
+						pink = "#ff55ff",
+						mauve = "#ff55ff",
+						peach = "#fdfd55",
+						yellow = "#fdfd55",
+						green = "#55ff55",
+						teal = "#7afafa",
+						sky = "#7afafa",
+						sapphire = "#5555ff",
+						blue = "#5555ff",
+						lavender = "#ff55ff",
+						text = "#ffffff",
+						subtext1 = "#eeeeee",
+						subtext0 = "#dddddd",
+						overlay2 = "#aaaaaa",
+						overlay1 = "#999999",
+						overlay0 = "#595959",
+						surface2 = "#4d4d4d",
+						surface1 = "#404040",
+						surface0 = "#292929",
+						base = "#000000",
+						mantle = "#0e0e0e",
+						crust = "#171717",
+					},
 					mocha = {
+						-- gruvbox
 						rosewater = "#ea6962",
 						flamingo = "#ea6962",
 						red = "#ea6962",
@@ -344,49 +374,87 @@ return {
 		end,
 	},
 	{
-		"vague2k/vague.nvim",
-		config = function()
-			require("vague").setup({
-				transparent = false,
-				style = {
-					comments = "none",
-					strings = "none",
-				},
-			})
-		end,
-	},
-	{
-		"slugbyte/lackluster.nvim",
-		enabled = false,
-		lazy = false,
-		priority = 1000,
-	},
-	{
-		"chriskempson/base16-vim",
-		lazy = false,
-		priority = 1000,
-	},
-	{
-		"morhetz/gruvbox",
-		lazy = false,
-		priority = 1000,
-	},
-	{
 		"scottmckendry/cyberdream.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
 			require("cyberdream").setup({
 				theme = {
-					-- variant = "light",
-					highlights = {
-						CursorLine = { bg = "#1e2124" },
-						StatusLine = { fg = "#ffffff", bg = "#3c4048" },
-						StatusLineNC = { fg = "#ffffff", bg = "#3c4048" },
-						Whitespace = { link = "NonText" },
-					},
+					-- highlights = {
+					-- 	CursorLine = { bg = "#1e2124" },
+					-- 	StatusLine = { fg = "#ffffff", bg = "#3c4048" },
+					-- 	StatusLineNC = { fg = "#ffffff", bg = "#3c4048" },
+					-- 	Whitespace = { link = "NonText" },
+					-- },
 				},
 			})
 		end,
+	},
+	{
+		"sainnhe/gruvbox-material",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			vim.g.gruvbox_material_enable_italic = false
+			vim.g.gruvbox_material_better_performance = true
+			vim.g.gruvbox_material_foreground = "original"
+			vim.g.gruvbox_material_disable_italic_comment = true
+			vim.g.gruvbox_material_sign_column_background = "grey"
+			vim.g.gruvbox_material_statusline_style = "original"
+		end,
+	},
+	{
+		"uloco/bluloco.nvim",
+		lazy = false,
+		priority = 1000,
+		dependencies = { "rktjmp/lush.nvim" },
+		config = function()
+			require("bluloco").setup({
+				style = "auto", -- "auto" | "dark" | "light"
+				transparent = false,
+				italics = false,
+				terminal = vim.fn.has("gui_running") == 1, -- bluoco colors are enabled in gui terminals per default.
+				guicursor = true,
+			})
+		end,
+	},
+	{
+		"miikanissi/modus-themes.nvim",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			require("modus-themes").setup({
+				style = "auto",
+				variant = "default",
+				transparent = false,
+				dim_inactive = false,
+				hide_inactive_statusline = false,
+				styles = {
+					comments = { italic = false },
+					keywords = { italic = false },
+					functions = {},
+					variables = {},
+				},
+				--- You can override specific color groups to use other groups or a hex color
+				--- Function will be called with a ColorScheme table
+				--- Refer to `extras/lua/modus_operandi.lua` or `extras/lua/modus_vivendi.lua` for the ColorScheme table
+				---@param colors ColorScheme
+				on_colors = function(colors) end,
+				--- You can override specific highlights to use other groups or a hex color
+				--- Function will be called with a Highlights and ColorScheme table
+				--- Refer to `extras/lua/modus_operandi.lua` or `extras/lua/modus_vivendi.lua` for the Highlights and ColorScheme table
+				---@param highlights Highlights
+				---@param colors ColorScheme
+				on_highlights = function(highlights, colors)
+					-- highlights.NonText = { fg = colors.fg_dim }
+				end,
+			})
+		end,
+	},
+	{
+		"olivercederborg/poimandres.nvim",
+	},
+	{
+		"EdenEast/nightfox.nvim",
 	},
 }
