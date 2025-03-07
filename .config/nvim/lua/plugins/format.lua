@@ -27,6 +27,7 @@ return {
 					jsonc = { "biome", "prettierd", stop_after_first = true },
 					lua = { "stylua" },
 					markdown = { "prettierd" },
+					sql = { "sqlfmt" },
 					templ = { "templ", "rustywind" },
 					template = { "rustywind" },
 					typescript = { "biome", "prettierd", stop_after_first = true },

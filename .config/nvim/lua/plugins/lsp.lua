@@ -16,7 +16,6 @@ return {
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
-			-- "hrsh7th/cmp-nvim-lsp",
 			"saghen/blink.cmp",
 		},
 		opts = {
@@ -40,6 +39,7 @@ return {
 				},
 				omnisharp = {},
 				rust_analyzer = {},
+				sqls = {},
 				templ = {},
 				ts_ls = {},
 				zls = {},
@@ -68,31 +68,6 @@ return {
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 					map("gl", vim.diagnostic.open_float, "Open float")
-
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-						local highlight_augroup =
-							vim.api.nvim_create_augroup("brattonross-lsp-highlight", { clear = false })
-						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.document_highlight,
-						})
-
-						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.clear_references,
-						})
-
-						vim.api.nvim_create_autocmd("LspDetach", {
-							group = vim.api.nvim_create_augroup("brattonross-lsp-detach", { clear = true }),
-							callback = function(event2)
-								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds({ group = "brattonross-lsp-highlight", buffer = event2.buf })
-							end,
-						})
-					end
 				end,
 			})
 
@@ -102,9 +77,14 @@ return {
 				lspconfig[server].setup(config)
 			end
 
-			require("mason").setup()
+			require("mason").setup({ ui = { height = 1.0, width = 1.0 } })
 			require("mason-tool-installer").setup({ ensure_installed = vim.tbl_keys(opts.servers or {}) })
 			require("mason-lspconfig").setup()
+
+			vim.diagnostic.config({
+				float = { border = "single" },
+				virtual_text = true,
+			})
 		end,
 	},
 }

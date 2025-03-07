@@ -12,56 +12,24 @@ return {
 				end,
 			},
 			"nvim-telescope/telescope-ui-select.nvim",
+			"nvim-telescope/telescope-frecency.nvim",
 		},
 		config = function()
 			local telescope = require("telescope")
 
 			telescope.setup({
+				defaults = require("telescope.themes").get_ivy({}),
 				extensions = {
 					fzf = {},
 					["ui-select"] = {
 						require("telescope.themes").get_ivy({}),
 					},
 				},
-				pickers = {
-					buffers = {
-						theme = "ivy",
-					},
-					commands = {
-						theme = "ivy",
-					},
-					current_buffer_fuzzy_find = {
-						theme = "ivy",
-					},
-					diagnostics = {
-						theme = "ivy",
-					},
-					find_files = {
-						theme = "ivy",
-					},
-					grep_string = {
-						theme = "ivy",
-					},
-					help_tags = {
-						theme = "ivy",
-					},
-					highlights = {
-						theme = "ivy",
-					},
-					keymaps = {
-						theme = "ivy",
-					},
-					live_grep = {
-						theme = "ivy",
-					},
-					oldfiles = {
-						theme = "ivy",
-					},
-				},
 			})
 
 			pcall(telescope.load_extension, "fzf")
 			pcall(telescope.load_extension, "ui-select")
+			pcall(telescope.load_extension, "frecency")
 
 			vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles)
 			vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers)

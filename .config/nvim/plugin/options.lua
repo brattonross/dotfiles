@@ -17,6 +17,8 @@ vim.opt.listchars:append({
 	tab = "» ",
 })
 
+vim.opt.laststatus = 3
+
 -- search
 vim.opt.inccommand = "split"
 vim.opt.smartcase = true
@@ -29,6 +31,6 @@ vim.opt.softtabstop = 4
 vim.opt.tabstop = 4
 vim.opt.wrap = false
 
-vim.opt.formatoptions:remove("o")
+vim.opt.formatoptions:remove("cro")
 
 vim.opt.swapfile = false
